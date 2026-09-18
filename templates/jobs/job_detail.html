@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ job.title }} - Job Portal
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-5">
+
+            <h1 class="fw-bold">
+                {{ job.title }}
+            </h1>
+
+            <h5 class="text-primary mt-3">
+                {{ job.company }}
+            </h5>
+
+            <hr>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <p>
+                        <strong>Location:</strong>
+                        {{ job.location }}
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <p>
+                        <strong>Salary:</strong>
+                        {{ job.salary }}
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <p>
+                        <strong>Experience:</strong>
+                        {{ job.experience }}
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <p>
+                        <strong>Job Type:</strong>
+                        {{ job.job_type }}
+                    </p>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h4>Job Description</h4>
+
+            <p class="mt-3">
+                {{ job.description }}
+            </p>
+
+            <a href="#"
+               class="btn btn-primary mt-3">
+                Apply Now
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
