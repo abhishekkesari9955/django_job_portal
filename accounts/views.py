@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login 
+from django.contrib.auth import authenticate, login ,logout
 
 from .forms import RegistrationForm
 
@@ -14,11 +14,26 @@ def register(request):
 
         form = RegistrationForm(request.POST)
 
+        print("POST RECEIVED")
+        print("FORM DATA:", request.POST)
+
         if form.is_valid():
+
+            print("FORM IS VALID")
+
             form.save()
+
+            print("USER SAVED")
+
             return redirect("login")
 
+        else:
+
+            print("FORM IS NOT VALID")
+            print(form.errors)
+
     else:
+
         form = RegistrationForm()
 
     return render(request, "accounts/register.html", {
