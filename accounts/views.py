@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login ,logout
-
 from .forms import RegistrationForm
+from .models import CandidateProfile, RecruiterProfile
 
 
 def home(request):
     return render(request, "home.html")
-
 
 def register(request):
 
@@ -14,23 +13,25 @@ def register(request):
 
         form = RegistrationForm(request.POST)
 
-        print("POST RECEIVED")
-        print("FORM DATA:", request.POST)
-
         if form.is_valid():
 
-            print("FORM IS VALID")
+            user = form.save()
 
-            form.save()
+            role = form.cleaned_data["role"]
 
-            print("USER SAVED")
+            if role == "candidate":
+
+                CandidateProfile.objects.create(
+                    user=user
+                )
+
+            elif role == "recruiter":
+
+                RecruiterProfile.objects.create(
+                    user=user
+                )
 
             return redirect("login")
-
-        else:
-
-            print("FORM IS NOT VALID")
-            print(form.errors)
 
     else:
 
@@ -52,3 +53,7 @@ def login_view(request):
         else:
             return render(request, "accounts/login.html", {"error": "Invalid username or password."})
     return render(request, "accounts/login.html")
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")
