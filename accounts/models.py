@@ -21,6 +21,8 @@ class RecruiterProfile(models.Model):
         on_delete=models.CASCADE
     )
 
+
+
     company = models.CharField(max_length=200)
 
     phone = models.CharField(max_length=15)
