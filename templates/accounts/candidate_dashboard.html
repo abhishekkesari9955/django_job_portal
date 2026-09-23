@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+Candidate Dashboard - Job Portal
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h1 class="fw-bold">
+        Candidate Dashboard
+    </h1>
+
+    <p class="text-muted">
+        Welcome, {{ user.username }}!
+    </p>
+
+    <div class="row g-4 mt-3">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Search Jobs</h5>
+                    <p>
+                        Find jobs that match your skills.
+                    </p>
+                    <a href="{% url 'job_list' %}"
+                       class="btn btn-primary">
+                        Browse Jobs
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>My Applications</h5>
+                    <p>
+                        Track your job applications.
+                    </p>
+                    <button class="btn btn-secondary">
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>My Profile</h5>
+                    <p>
+                        Manage your candidate profile.
+                    </p>
+                        <a
+                            href="{% url 'candidate_profile' %}"
+                            class="btn btn-primary">
+
+                            Edit Profile
+
+                        </a>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
