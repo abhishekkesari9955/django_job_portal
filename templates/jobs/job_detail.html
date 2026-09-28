@@ -62,10 +62,37 @@
                 {{ job.description }}
             </p>
 
-            <a href="#"
-               class="btn btn-primary mt-3">
-                Apply Now
-            </a>
+            {% if user.is_authenticated %}
+
+                {% if user.candidateprofile %}
+
+                    <a
+                        href="{% url 'apply_job' job.id %}"
+                        class="btn btn-primary mt-3">
+
+                        Apply Now
+
+                    </a>
+
+                {% else %}
+
+                    <p class="text-muted mt-3">
+                        Only candidates can apply for jobs.
+                    </p>
+
+                {% endif %}
+
+            {% else %}
+
+                <a
+                    href="{% url 'login' %}"
+                    class="btn btn-primary mt-3">
+
+                    Login to Apply
+
+                </a>
+
+            {% endif %}
 
         </div>
 
