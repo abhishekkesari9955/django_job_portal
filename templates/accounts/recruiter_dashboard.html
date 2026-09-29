@@ -25,9 +25,10 @@ Recruiter Dashboard - Job Portal
                     <p>
                         Create a new job opportunity.
                     </p>
-                    <button class="btn btn-primary">
-                        Coming Soon
-                    </button>
+                    <a href="{% url 'create_job' %}"
+                        class = "btn btn-primary">
+                    Post a Job
+                    </a>
                 </div>
             </div>
         </div>
@@ -39,9 +40,10 @@ Recruiter Dashboard - Job Portal
                     <p>
                         View and manage your posted jobs.
                     </p>
-                    <button class="btn btn-secondary">
-                        Coming Soon
-                    </button>
+                    <a  href="{% url 'recruiter_jobs' %}"
+                        class="btn btn-primary">
+                    Manage Jobs
+                    </a>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ class Application(models.Model):
         ('applied','Applied'),
         ('shortlisted','Shortlisted'),
         ('rejected','Rejected'),
-        ('hired','Hired'),]
+        ('Selected','selected'),]
 
     candidate = models.ForeignKey(User, on_delete=models.CASCADE ,related_name='applications')
     job = models.ForeignKey(Job, on_delete=models.CASCADE , related_name='applications')

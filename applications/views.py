@@ -30,4 +30,13 @@ def apply_job(request, job_id):
 @login_required
 def application_success(request):
     return render(request, 'applications/application_success.html')
-    
+
+
+
+def my_applications(request):
+    if not request.user.is_authenticated:
+        return redirect("home")
+    applications = Application.objects.filter(
+        candidate=request.user).select_related('job').order_by("-applied_at")
+    return render(request,"applications/my_applications.html",{"applications":applications})
+
