@@ -47,11 +47,23 @@ My Jobs - Job Portal
                             </span>
                         </div>
                         <div class="card-footer bg-white">
+                            <div class="d-grid gap-2">
                             <a
                                 href="{% url 'job_detail' job.id %}"
-                                class="btn btn-outline-primary w-100">
+                                class="btn btn-outline-primary">
                                 View Job
                             </a>
+                            <a
+                                href="{% url 'edit_job' job.id %}"
+                                class="btn btn-warning">
+                                Edit
+                            </a>
+                            <a
+                                href="{% url 'delete_job' job.id %}"
+                                class="btn btn-danger">
+                                Delete
+                            </a>
+                        </div>
                         </div>
                     </div>
                 </div>

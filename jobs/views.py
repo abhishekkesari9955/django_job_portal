@@ -31,7 +31,7 @@ def create_job(request):
         form = JobForm(request.POST)
         if form.is_valid():
             job = form.save(commit=False)
-            job.recuiter =request.user
+            job.recruiter = request.user
             job.save()
             return redirect("recruiter_jobs")
     else:
@@ -45,3 +45,33 @@ def recruiter_jobs(request):
         return redirect("home")
     jobs = Job.objects.filter(recruiter=request.user).order_by("-created_at")
     return render(request,"jobs/recruiter_jobs.html",{"jobs":jobs})
+
+@login_required
+def edit_job(request, job_id):
+    if not hasattr(request.user, "recruiterprofile"):
+        return redirect("home")
+
+    job = get_object_or_404(Job,id=job_id,recruiter=request.user)
+
+    if request.method == "POST":
+        form = JobForm(request.POST, instance=job)
+
+        if form.is_valid():
+            form.save()
+            return redirect("recruiter_jobs")
+    else:
+        form = JobForm(instance=job)
+    return render(request,"jobs/edit_job.html",{"form": form, "job": job})
+
+@login_required
+def delete_job(request, job_id):
+    if not hasattr(request.user, "recruiterprofile"):
+        return redirect("home")
+
+    job = get_object_or_404(Job,id=job_id,recruiter=request.user)
+
+    if request.method == "POST":
+        job.delete()
+        return redirect("recruiter_jobs")
+
+    return render(request,"jobs/delete_job.html",{"job": job})
