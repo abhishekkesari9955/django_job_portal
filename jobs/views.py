@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Job
-from .forms import JobForm
+from .forms import JobForm , ApplicationStatusForm
+from applications.models import Application
 
 def job_list(request):
     jobs = Job.objects.all()
@@ -75,3 +76,63 @@ def delete_job(request, job_id):
         return redirect("recruiter_jobs")
 
     return render(request,"jobs/delete_job.html",{"job": job})
+
+@login_required
+def job_applicants(request, job_id):
+    if not hasattr(request.user, "recruiterprofile"):
+        return redirect("home")
+
+    job = get_object_or_404(Job,id=job_id,recruiter=request.user)
+
+    applications = job.applications.select_related("candidate").order_by("-applied_at")
+
+    return render(request,"jobs/job_applicants.html",{"job": job,"applications": applications})
+
+@login_required
+def application_detail(request, application_id):
+    if not hasattr(request.user, "recruiterprofile"):
+        return redirect("home")
+
+    application = get_object_or_404(Application,id=application_id,job__recruiter=request.user)
+
+    candidate = application.candidate
+
+    return render(request,"jobs/application_detail.html",{"application": application,"candidate": candidate,})
+
+@login_required
+def update_application_status(request, application_id):
+
+    if not hasattr(request.user, "recruiterprofile"):
+        return redirect("home")
+
+    application = get_object_or_404(
+        Application,
+        id=application_id,
+        job__recruiter=request.user
+    )
+
+    if request.method == "POST":
+
+        form = ApplicationStatusForm(
+            request.POST,
+            instance=application
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect(
+                "application_detail",
+                application_id=application.id
+            )
+
+    else:
+        form = ApplicationStatusForm(instance=application)
+
+    return render(
+        request,
+        "jobs/update_application_status.html",
+        {
+            "form": form,
+            "application": application
+        }
+    )

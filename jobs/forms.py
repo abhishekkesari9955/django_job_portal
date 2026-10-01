@@ -1,5 +1,5 @@
 from django import forms
-
+from applications.models import Application
 from .models import Job
 
 
@@ -61,4 +61,18 @@ class JobForm(forms.ModelForm):
                     "class": "form-select"
                 }
             ),
+        }
+
+class ApplicationStatusForm(forms.ModelForm):
+
+    class Meta:
+        model = Application
+        fields = ["status"]
+
+        widgets = {
+            "status": forms.Select(
+                attrs={
+                    "class": "form-select"
+                }
+            )
         }

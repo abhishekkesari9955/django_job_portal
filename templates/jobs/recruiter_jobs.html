@@ -54,6 +54,11 @@ My Jobs - Job Portal
                                 View Job
                             </a>
                             <a
+                                href="{% url 'job_applicants' job.id %}"
+                                class="btn btn-outline-success">
+                                Applicants
+                            </a>
+                            <a
                                 href="{% url 'edit_job' job.id %}"
                                 class="btn btn-warning">
                                 Edit

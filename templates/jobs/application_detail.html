@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}
+Application Details - Job Portal
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold mb-4">
+                        Application Details
+                    </h2>
+                    <!-- Job -->
+                    <div class="mb-4">
+                        <h5 class="text-muted">
+                            Applied For
+                        </h5>
+                        <h3>
+                            {{ application.job.title }}
+                        </h3>
+                        <p class="text-primary fw-bold">
+                            {{ application.job.company }}
+                        </p>
+                    </div>
+                    <hr>
+                    <!-- Candidate -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold">
+                            Candidate Information
+                        </h5>
+                        <p>
+                            <strong>Username:</strong>
+                            {{ candidate.username }}
+                        </p>
+                        <p>
+                            <strong>Email:</strong>
+                            {{ candidate.email }}
+                        </p>
+                        {% if candidate.candidateprofile %}
+                            <p>
+                                <strong>Phone:</strong>
+                                {{ candidate.candidateprofile.phone }}
+                            </p>
+                            <p>
+                                <strong>Skills:</strong>
+                                {{ candidate.candidateprofile.skills }}
+                            </p>
+                            <p>
+                                <strong>Location:</strong>
+                                {{ candidate.candidateprofile.location }}
+                            </p>
+                            {% if candidate.candidateprofile.resume %}
+                                <a
+                                    href="{{ candidate.candidateprofile.resume.url }}"
+                                    target="_blank"
+                                    class="btn btn-outline-primary">
+                                    View Resume
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <!-- Cover Letter -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold">
+                            Cover Letter
+                        </h5>
+                        {% if application.cover_letter %}
+                            <p>
+                                {{ application.cover_letter }}
+                            </p>
+                        {% else %}
+                            <p class="text-muted">
+                                No cover letter provided.
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <!-- Status -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold">
+                            Application Status
+                        </h5>
+                        {% if application.status == "applied" %}
+                            <span class="badge bg-primary">
+                                Applied
+                            </span>
+                        {% elif application.status == "shortlisted" %}
+                            <span class="badge bg-warning text-dark">
+                                Shortlisted
+                            </span>
+                        {% elif application.status == "rejected" %}
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+                        {% elif application.status == "selected" %}
+                            <span class="badge bg-success">
+                                Selected
+                            </span>
+                        {% endif %}
+                        <div class="mt-3">
+
+                            <a
+                                href="{% url 'update_application_status' application.id %}"
+                                class="btn btn-warning">
+                                Update Status
+                            </a>
+
+                        </div>
+                    </div>
+                    <a
+                        href="{% url 'job_applicants' application.job.id %}"
+                        class="btn btn-secondary">
+                        Back to Applicants
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
