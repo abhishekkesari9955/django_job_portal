@@ -3,12 +3,31 @@ from django.contrib.auth.decorators import login_required
 from .models import Job
 from .forms import JobForm , ApplicationStatusForm
 from applications.models import Application
+from django.core.paginator import Paginator
 
 def job_list(request):
+    query = request.GET.get("q",'')
+    job_type = request.GET.get("job_type",'')
+    location = request.GET.get("location",'')
     jobs = Job.objects.all()
+    if query:
+        jobs = jobs.filter(title__icontains=query) | jobs.filter(description__icontains=query) | jobs.filter(location__icontains=query)
+    if job_type:
+        jobs = jobs.filter(job_type=job_type)
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+    
+    jobs = jobs.order_by("-created_at")
+    paginator = Paginator(jobs, 6)
+    page_number = request.GET.get("page")
+    jobs = paginator.get_page(page_number)
 
     return render(request, "jobs/job_list.html", {
-        "jobs": jobs
+        "jobs": jobs,
+        "page_obj": jobs,
+        "query": query,
+        "job_type": job_type,
+        "location": location
     })
 
 

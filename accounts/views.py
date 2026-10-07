@@ -69,15 +69,110 @@ def logout_view(request):
 
 @login_required
 def candidate_dashboard(request):
+
     if not hasattr(request.user, "candidateprofile"):
         return redirect("home")
-    return render(request, "accounts/candidate_dashboard.html")
+
+    from applications.models import Application
+
+    # Total applications
+    total_applications = Application.objects.filter(
+        candidate=request.user
+    ).count()
+
+    # Application status counts
+    applied = Application.objects.filter(
+        candidate=request.user,
+        status="applied"
+    ).count()
+
+    shortlisted = Application.objects.filter(
+        candidate=request.user,
+        status="shortlisted"
+    ).count()
+
+    selected = Application.objects.filter(
+        candidate=request.user,
+        status="selected"
+    ).count()
+
+    rejected = Application.objects.filter(
+        candidate=request.user,
+        status="rejected"
+    ).count()
+
+    # Recent applications
+    recent_applications = Application.objects.filter(
+        candidate=request.user
+    ).select_related(
+        "job"
+    ).order_by("-applied_at")[:5]
+
+    return render(
+        request,
+        "accounts/candidate_dashboard.html",
+        {
+            "total_applications": total_applications,
+            "applied": applied,
+            "shortlisted": shortlisted,
+            "selected": selected,
+            "rejected": rejected,
+            "recent_applications": recent_applications,
+        }
+    )
 @login_required
 def recruiter_dashboard(request):
+
     if not hasattr(request.user, "recruiterprofile"):
         return redirect("home")
-    return render(request, "accounts/recruiter_dashboard.html")
 
+    from jobs.models import Job
+    from applications.models import Application
+
+    # Dashboard statistics
+    total_jobs = Job.objects.filter(
+        recruiter=request.user
+    ).count()
+
+    total_applicants = Application.objects.filter(
+        job__recruiter=request.user
+    ).count()
+
+    shortlisted = Application.objects.filter(
+        job__recruiter=request.user,
+        status="shortlisted"
+    ).count()
+
+    selected = Application.objects.filter(
+        job__recruiter=request.user,
+        status="selected"
+    ).count()
+
+    # Recent jobs
+    recent_jobs = Job.objects.filter(
+        recruiter=request.user
+    ).order_by("-created_at")[:5]
+
+    # Recent applicants
+    recent_applications = Application.objects.filter(
+        job__recruiter=request.user
+    ).select_related(
+        "candidate",
+        "job"
+    ).order_by("-applied_at")[:5]
+
+    return render(
+        request,
+        "accounts/recruiter_dashboard.html",
+        {
+            "total_jobs": total_jobs,
+            "total_applicants": total_applicants,
+            "shortlisted": shortlisted,
+            "selected": selected,
+            "recent_jobs": recent_jobs,
+            "recent_applications": recent_applications,
+        }
+    )
 @login_required
 def candidate_profile(request):
 
