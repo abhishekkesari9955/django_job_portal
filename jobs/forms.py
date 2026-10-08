@@ -32,9 +32,9 @@ class JobForm(forms.ModelForm):
                 }
             ),
 
-            "company": forms.TextInput(
+            "company": forms.Select(
                 attrs={
-                    "class": "form-control"
+                    "class": "form-select"
                 }
             ),
 

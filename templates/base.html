@@ -105,7 +105,7 @@
                 <li class="nav-item">
 
                     <a class="nav-link"
-                       href="#">
+                       href="{% url 'company_list' %}">
 
                         Companies
 
@@ -116,7 +116,7 @@
 
                 {% if user.is_authenticated %}
 
-
+                    
                     <!-- Logged-in User -->
 
                     <li class="nav-item">
@@ -149,6 +149,12 @@
 
 
                     {% if user.recruiterprofile %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                            href="{% url 'manage_company' %}">
+                                🏢 My Company
+                            </a>
+                        </li>
 
                         <li class="nav-item">
 

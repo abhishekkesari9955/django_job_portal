@@ -16,9 +16,20 @@
                 {{ job.title }}
             </h1>
 
-            <h5 class="text-primary mt-3">
-                {{ job.company }}
-            </h5>
+            <p>
+                🏢
+                <strong>Company:</strong>
+
+                {% if job.company %}
+                    <a
+                        href="{% url 'company_detail' job.company.id %}"
+                        class="text-decoration-none">
+                        {{ job.company.name }}
+                    </a>
+                {% else %}
+                    Not specified
+                {% endif %}
+            </p>
 
             <hr>
 

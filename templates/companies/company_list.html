@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}
+Companies - Job Portal
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            Companies
+        </h1>
+
+        <p class="text-muted">
+            Explore companies and discover new opportunities.
+        </p>
+
+    </div>
+<form
+    method="GET"
+    action="{% url 'company_list' %}"
+    class="row g-3 mb-5">
+
+    <div class="col-md-5">
+        <input
+            type="text"
+            name="q"
+            class="form-control form-control-lg"
+            placeholder="Search company..."
+            value="{{ query }}">
+    </div>
+
+    <div class="col-md-4">
+        <input
+            type="text"
+            name="location"
+            class="form-control form-control-lg"
+            placeholder="Location"
+            value="{{ location }}">
+    </div>
+
+    <div class="col-md-3">
+        <button
+            type="submit"
+            class="btn btn-primary btn-lg w-100">
+            Search Companies
+        </button>
+    </div>
+
+</form>
+{% if query or location %}
+
+    <div class="mb-4">
+
+        <h5>
+            Search Results
+        </h5>
+
+        {% if query %}
+            <span class="badge bg-primary">
+                Company: {{ query }}
+            </span>
+        {% endif %}
+
+        {% if location %}
+            <span class="badge bg-secondary">
+                Location: {{ location }}
+            </span>
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+    {% if companies %}
+
+        <div class="row g-4">
+
+            {% for company in companies %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm h-100 border-0">
+
+                        <div class="card-body">
+<div
+                class="rounded-circle bg-primary text-white
+                       d-flex align-items-center justify-content-center
+                       mb-3"
+                style="width: 60px; height: 60px;">
+
+                🏢
+
+            </div>
+                            <h4 class="fw-bold">
+                                {{ company.name }}
+                            </h4>
+
+                            <p class="text-muted">
+                                📍 {{ company.location }}
+                            </p>
+                            <p class="text-primary fw-bold">
+    💼 {{ company.job_count }} Job{{ company.job_count|pluralize }} Available
+</p>
+                            
+                            <p>
+                                {{ company.description|truncatewords:20 }}
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-white border-0">
+
+                            <a
+                                href="{% url 'company_detail' company.id %}"
+                                class="btn btn-primary w-100">
+
+                                View Company
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                {% empty %}
+
+<div class="text-center py-5">
+
+    <div style="font-size: 50px;">
+        🔍
+    </div>
+
+    <h3 class="fw-bold">
+        No Companies Found
+    </h3>
+
+    <p class="text-muted">
+        We couldn't find any companies matching your search.
+    </p>
+
+    <a
+        href="{% url 'company_list' %}"
+        class="btn btn-primary">
+        Clear Filters
+    </a>
+
+</div>
+
+{% endfor %}
+            
+
+        </div>
+
+    {% else %}
+
+        <div class="text-center py-5">
+
+            <h4>
+                No Companies Found
+            </h4>
+
+            <p class="text-muted">
+                Companies will appear here soon.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

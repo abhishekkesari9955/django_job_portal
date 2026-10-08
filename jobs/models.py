@@ -16,7 +16,7 @@ class Job(models.Model):
 
     title = models.CharField(max_length=200)
     description = models.TextField()
-    company = models.CharField(max_length=200)
+    company = models.ForeignKey("companies.Company", on_delete=models.CASCADE, related_name='jobs')
     location = models.CharField(max_length=100)
     salary = models.CharField(max_length=100)
     experience = models.CharField(max_length=100)
